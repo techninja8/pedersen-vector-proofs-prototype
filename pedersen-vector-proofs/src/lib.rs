@@ -40,7 +40,7 @@ impl PedersenVectorCommitment {
         }
     }
 
-    // Commitment: C = r * h + ∑_{i=0}^{n-1} x_i * g_i.
+    // We define our cmmitment: C = r * h + ∑_{i=0}^{n-1} x_i * g_i.
     pub fn commit(&self, values: &[Scalar], r: Scalar) -> RistrettoPoint {
         assert_eq!(
             values.len(),
@@ -71,8 +71,8 @@ impl Proof {
         }
     }
 
-    // Verification: For a full opening of a 1-element vector,
-    // we expect C - x_0 * g_0 == r * h.
+    // Verification: For a full opening of a 1-element vector (Single-Point Opening),
+    // we expect C - x_0 * g_0 == r * h for the proof to hold.
     pub fn verify(
         &self,
         commitment: RistrettoPoint,
@@ -85,7 +85,8 @@ impl Proof {
 }
 
 impl BatchProof {
-    // For a batch proof, we assume that the entire vector is being opened.
+    // For a batch proof, we assume that the entire vector passes is being opened.
+    // This is a weak assumption, for the context of this prototype
     pub fn generate(
         commitment_scheme: &PedersenVectorCommitment,
         values: &[Scalar],
@@ -128,6 +129,8 @@ impl BatchProof {
 
 fn main() {}
 
+// Tests
+// Tests are simplicied, we do not include considerations for security risks for the sake of this basic prototype
 #[cfg(test)]
 mod tests {
     use super::*;
